@@ -1,7 +1,6 @@
 package dev.java10x.MagicFridgeAI.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class FoodItemModel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String categoria;
