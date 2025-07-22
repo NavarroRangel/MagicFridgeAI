@@ -22,4 +22,17 @@ public class FoodItemService {
     public List<FoodItemModel> listar(){
         return repository.findAll();
     }
+
+    public FoodItemModel buscaId(Long id){
+        return repository.findById(id).get();
+    }
+
+    public FoodItemModel altera(FoodItemModel foodItemModel, Long id){
+        buscaId(id);
+        return repository.save(foodItemModel);
+
+    }
+    public void deleta( long id){
+        repository.deleteById(id);
+    }
 }
