@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class FoodItemController {
     private FoodItemService service;
 
-    public FoodItemController(FoodItemService foddItemService) {
-        this.service = foddItemService;
+    public FoodItemController(FoodItemService foodItemService) {
+        this.service = foodItemService;
     }
     //POST
     public ResponseEntity<FoodItemModel> criar(@RequestBody FoodItemModel foodItemModel){
