@@ -14,7 +14,7 @@ public class FoodItemController {
     private FoodItemService service;
 
     public FoodItemController(FoodItemService foddItemService) {
-        this.foddItemService = foddItemService;
+        this.service = foddItemService;
     }
     //POST
     public ResponseEntity<FoodItemModel> criar(@RequestBody FoodItemModel foodItemModel){
