@@ -20,12 +20,14 @@ public class FoodItemController {
         this.repository = foodItemRepository;
     }
     //POST
+    @PostMapping
     public ResponseEntity<FoodItemModel> criar(@RequestBody FoodItemModel foodItemModel){
         FoodItemModel salvo = service.salvar(foodItemModel);
         return ResponseEntity.ok(salvo);
     }
 
     //GET
+    @GetMapping
     public ResponseEntity <List<FoodItemModel>> listar(){
         List<FoodItemModel> lista = service.listar();
         return ResponseEntity.ok(lista);
@@ -33,7 +35,8 @@ public class FoodItemController {
 
 
     //TODO: Listar por id
-    public ResponseEntity<Optional<FoodItemModel>> listarPorId(@RequestBody Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<FoodItemModel>> listarPorId(@PathVariable Long id){
         Optional<FoodItemModel> buscaId = service.buscaId(id);
         return ResponseEntity.ok(buscaId);
 
@@ -43,7 +46,7 @@ public class FoodItemController {
     //Update
     @PutMapping("/{id}")
     public ResponseEntity<FoodItemModel> alterar(@RequestBody  FoodItemModel foodItemModel,@PathVariable Long id){
-        service.buscaId(id)
+        return service.buscaId(id)
                 .map(itemExistente -> {
                     foodItemModel.setId(itemExistente.getId());
                     FoodItemModel atualizado = service.altera(foodItemModel);
@@ -51,10 +54,10 @@ public class FoodItemController {
                 })
                 .orElse(ResponseEntity.notFound().build());
 
-    }
+    };
 
     //DELTE
-
+    @DeleteMapping
     public ResponseEntity<String> deleteById(@PathVariable Long id){
         service.deleta(id);
         return ResponseEntity.ok("Deletado com sucesso o id " + id);
