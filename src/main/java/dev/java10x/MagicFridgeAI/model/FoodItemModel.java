@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "food_imte")
+@Table(name = "food_item")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoodItemModel {
