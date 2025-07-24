@@ -57,9 +57,18 @@ public class FoodItemController {
     };
 
     //DELTE
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id){
-        service.deleta(id);
-        return ResponseEntity.ok("Deletado com sucesso o id " + id);
+        if (repository.existsById(id)) {
+            Optional<FoodItemModel> buscaid = service.buscaId(id);
+            String nomeProduto = buscaid.get().getNome();
+            service.deleta(id);
+
+            return ResponseEntity.ok("Deletado com sucesso o produto " + nomeProduto);
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 }
