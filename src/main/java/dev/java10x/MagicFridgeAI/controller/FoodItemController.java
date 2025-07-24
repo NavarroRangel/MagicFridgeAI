@@ -27,8 +27,9 @@ public class FoodItemController {
     }
 
     //GET
-    public List<FoodItemModel> listar(){
-        return repository.findAll();
+    public ResponseEntity <List<FoodItemModel>> listar(){
+        List<FoodItemModel> lista = service.listar();
+        return ResponseEntity.ok(lista);
     }
 
 
