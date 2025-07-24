@@ -30,8 +30,7 @@ public class FoodItemService {
 
     }
 
-    public FoodItemModel altera(FoodItemModel foodItemModel, Long id){
-        buscaId(id);
+    public FoodItemModel altera(FoodItemModel foodItemModel){
         return repository.save(foodItemModel);
 
     }
