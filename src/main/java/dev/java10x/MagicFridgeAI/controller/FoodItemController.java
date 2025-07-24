@@ -4,6 +4,7 @@ import dev.java10x.MagicFridgeAI.model.FoodItemModel;
 import dev.java10x.MagicFridgeAI.repository.FoodItemRepository;
 import dev.java10x.MagicFridgeAI.service.FoodItemService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +51,7 @@ public class FoodItemController {
 
     //DELTE
 
-    public ResponseEntity<String> deleteById(Long id){
+    public ResponseEntity<String> deleteById(@PathVariable Long id){
         service.deleta(id);
         return ResponseEntity.ok("Deletado com sucesso o id " + id);
     }
