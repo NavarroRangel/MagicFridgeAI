@@ -4,12 +4,10 @@ import dev.java10x.MagicFridgeAI.model.FoodItemModel;
 import dev.java10x.MagicFridgeAI.repository.FoodItemRepository;
 import dev.java10x.MagicFridgeAI.service.FoodItemService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/food")
@@ -35,18 +33,24 @@ public class FoodItemController {
 
 
     //TODO: Listar por id
-    public ResponseEntity<FoodItemModel> listarPorId(@RequestBody Long id){
-        FoodItemModel buscaId = service.buscaId(id);
+    public ResponseEntity<Optional<FoodItemModel>> listarPorId(@RequestBody Long id){
+        Optional<FoodItemModel> buscaId = service.buscaId(id);
         return ResponseEntity.ok(buscaId);
 
     }
 
 
     //Update
+    @PutMapping("/{id}")
+    public ResponseEntity<FoodItemModel> alterar(@RequestBody  FoodItemModel foodItemModel,@PathVariable Long id){
+        service.buscaId(id)
+                .map(itemExistente -> {
+                    foodItemModel.setId(itemExistente.getId());
+                    FoodItemModel atualizado = service.altera(foodItemModel);
+                    return ResponseEntity.ok(atualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
 
-    public ResponseEntity<FoodItemModel> alterar(@RequestBody FoodItemModel foodItemModel, Long id){
-        FoodItemModel alterado = service.altera(foodItemModel, id);
-        return ResponseEntity.ok(alterado);
     }
 
     //DELTE
