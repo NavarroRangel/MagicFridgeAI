@@ -1,5 +1,6 @@
 package dev.java10x.MagicFridgeAI.service;
 
+import dev.java10x.MagicFridgeAI.model.FoodItemModel;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -7,6 +8,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GeminiService {
@@ -17,28 +19,26 @@ public class GeminiService {
     public GeminiService(WebClient webClient) {
         this.webClient = webClient;
     }
-/* curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent" \
-  -H "x-goog-api-key: $GEMINI_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -X POST \
-  -d '{
-    "contents": [
-      {
-        "parts": [
-          {
-            "text": "How does AI work?"
-          }
-        ]
-      }
-    ],
-    "generationConfig": {
-      "thinkingConfig": {
-        "thinkingBudget": 0
-      }
-    }
-  }'*/
-public Mono<String> generateRecipe() {
-    String prompt = "Crie uma receita simples com os seguintes ingredientes:ovo e pao ";
+
+public Mono<String> generateRecipe(List<FoodItemModel> foodItemModels) {
+
+        String alimentos = foodItemModels.stream()
+                .map(item -> String.format("%s:  - Quantidade: %d, validade: %s",
+                        item.getNome(),
+                        item.getQuantidade(),
+                        item.getValidade()))
+                .collect(Collectors.joining("\n"));
+
+    String prompt = String.format(
+            "Aja como um chef de cozinha criativo e experiente. Sua tarefa é criar uma receita deliciosa usando apenas os ingredientes da lista abaixo. " +
+                    "Priorize o uso dos itens que estão mais próximos da data de validade.\n\n" +
+                    "Ingredientes Disponíveis:\n%s\n\n" +
+                    "Por favor, apresente a receita no seguinte formato:\n" +
+                    "**Nome da Receita:** (um nome criativo)\n" +
+                    "**Ingredientes:**\n- (liste os ingredientes usados)\n" +
+                    "**Modo de Preparo:**\n1. (passo 1)\n2. (passo 2)\n...",
+            alimentos
+    );;
 
     Map<String, Object> requestBody = Map.of(
             "contents", List.of(
